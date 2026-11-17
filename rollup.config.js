@@ -9,7 +9,7 @@ const input = 'src/index.js';
 const external = Object.keys($package.dependencies || []);
 const globals = {};
 
-for(let ext of external) {
+for (let ext of external) {
   globals[ext] = ext;
 }
 
@@ -17,11 +17,11 @@ function getOutput(min, sufix = '') {
   return {
     file: `dist/finka${sufix}${(min ? '.min' : '')}.js`,
     format: 'umd',
-    name:  'finka',
+    name: 'finka',
     banner: `/* Finka.js v${$package.version} ` +
-            `|  Copyright ${new Date().getFullYear()} (c) Smartbear Software and contributors ` +
-            '| https://github.com/bitbar/finka-js/blob/master/LICENSE.md ' +
-            '*/',
+      `|  Copyright ${new Date().getFullYear()} (c) Smartbear Software and contributors ` +
+      '| https://github.com/bitbar/finka-js/blob/master/LICENSE.md ' +
+      '*/',
     globals
   };
 }
@@ -44,15 +44,7 @@ function getTerserPlugin() {
 function getBabel() {
   return babel({
     babelHelpers: 'bundled',
-    presets: [
-      [
-        '@babel/env',
-        {
-          useBuiltIns: 'entry',
-          corejs: '3.6'
-        }
-      ]
-    ]
+    presets: ['@babel/env']
   });
 }
 

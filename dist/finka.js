@@ -5,7 +5,7 @@
   (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.finka = factory());
 })(this, (function () { 'use strict';
 
-  var add32 = function add32(a, b) {
+  const add32 = function (a, b) {
     return a + b & 0xFFFFFFFF;
   };
   function md5cycle(x, k) {
@@ -122,16 +122,16 @@
     return state;
   }
   function md5blk(s) {
-    var md5blks = [],
+    let md5blks = [],
       i;
     for (i = 0; i < 64; i += 4) {
       md5blks[i >> 2] = s.charCodeAt(i) + (s.charCodeAt(i + 1) << 8) + (s.charCodeAt(i + 2) << 16) + (s.charCodeAt(i + 3) << 24);
     }
     return md5blks;
   }
-  var hex_chr = '0123456789abcdef'.split('');
+  const hex_chr = '0123456789abcdef'.split('');
   function rhex(n) {
-    var s = '',
+    let s = '',
       j = 0;
     for (; j < 4; j++) {
       s += hex_chr[n >> j * 8 + 4 & 0x0F] + hex_chr[n >> j * 8 & 0x0F];
@@ -139,7 +139,7 @@
     return s;
   }
   function hex(x) {
-    for (var i = 0; i < x.length; i++) {
+    for (let i = 0; i < x.length; i++) {
       x[i] = rhex(x[i]);
     }
     return x.join('');
@@ -154,7 +154,7 @@
    * @global
    * @type {boolean}
    */
-  var isNodeJs = global.process && global.process.release && global.process.release.name === 'node';
+  const isNodeJs = global.process && global.process.release && global.process.release.name === 'node';
 
   /**
    * Get ISO 639-1 language string
@@ -163,7 +163,7 @@
    * @returns {string} ISO 639-1 language string
    */
   function getLanguage() {
-    var lang;
+    let lang;
     if (global.isNodeJs) {
       lang = process.env.LANGUAGE || process.env.LANG;
     } else {
@@ -183,13 +183,13 @@
     if (typeof global.userCountry !== 'undefined') {
       return global.userCountry;
     }
-    var country;
+    let country;
     if (global.isNodeJs) {
       country = process.env.LANG;
     } else {
       country = navigator.language;
       if (country.length < 3 && navigator.languages) {
-        for (var i = 0; i < navigator.languages.length; i++) {
+        for (let i = 0; i < navigator.languages.length; i++) {
           if (navigator.languages[i].length > 2) {
             country = navigator.languages[i];
             break;
@@ -197,7 +197,7 @@
         }
       }
     }
-    var countryMatch = country.match(/^[a-z]{2}[_-]([A-Z]{2})/);
+    const countryMatch = country.match(/^[a-z]{2}[_-]([A-Z]{2})/);
     if (countryMatch !== null) {
       country = countryMatch[1];
     }
@@ -234,7 +234,7 @@
     }
 
     // check if it's a boolean
-    var _value = value.toLowerCase();
+    const _value = value.toLowerCase();
     if (_value === 'true' || _value === 'false') {
       return _value === 'true';
     }
@@ -246,14 +246,14 @@
   }
   var globalExt = {
     constant: {
-      isNodeJs: isNodeJs
+      isNodeJs
     },
     static: {
-      getLanguage: getLanguage,
-      getCountry: getCountry,
-      isNumeric: isNumeric,
+      getLanguage,
+      getCountry,
+      isNumeric,
       parseValue: parseValue$1,
-      md5: md5
+      md5
     }
   };
 
@@ -270,8 +270,8 @@
    * @param [descending=false] {boolean} Flag to sort in descending order
    */
   function sortArrayOfObjects(arr, propertyName, descending) {
-    var order = descending ? -1 : 1;
-    var _a, _b;
+    const order = descending ? -1 : 1;
+    let _a, _b;
     arr.sort(function (a, b) {
       _a = a[propertyName];
       _b = b[propertyName];
@@ -401,7 +401,7 @@
    * @returns {number} Index of matching index; -1 if not found
    */
   function lookFor(query) {
-    for (var i = 0; i < this.length; i++) {
+    for (let i = 0; i < this.length; i++) {
       if (Object.isLike(this[i], query)) {
         return i;
       }
@@ -433,8 +433,8 @@
    * @returns {Array} this
    */
   function unique() {
-    for (var i = 0; i < this.length; ++i) {
-      for (var j = i + 1; j < this.length; ++j) {
+    for (let i = 0; i < this.length; ++i) {
+      for (let j = i + 1; j < this.length; ++j) {
         if (this[i] === this[j]) {
           this.splice(j--, 1);
         }
@@ -450,9 +450,9 @@
    * @returns {Array} this
    */
   function shuffle() {
-    for (var i = this.length - 1; i > 0; i--) {
-      var j = Math.floor(Math.rand() * (i + 1));
-      var temp = this[i];
+    for (let i = this.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.rand() * (i + 1));
+      const temp = this[i];
       this[i] = this[j];
       this[j] = temp;
     }
@@ -460,22 +460,22 @@
   }
   var ArrayExt = {
     static: {
-      sortArrayOfObjects: sortArrayOfObjects,
-      deepCloneArrayOfObjects: deepCloneArrayOfObjects,
-      wrap: wrap,
+      sortArrayOfObjects,
+      deepCloneArrayOfObjects,
+      wrap,
       isEmpty: isEmpty$1,
       isNotEmpty: isNotEmpty$1,
       isInvalidOrEmpty: isInvalidOrEmpty$1
     },
     method: {
-      empty: empty,
-      absorb: absorb,
-      diff: diff,
+      empty,
+      absorb,
+      diff,
       clone: clone$1,
-      lookFor: lookFor,
-      filterLike: filterLike,
-      unique: unique,
-      shuffle: shuffle
+      lookFor,
+      filterLike,
+      unique,
+      shuffle
     }
   };
 
@@ -496,25 +496,15 @@
   }
   var BooleanExt = {
     static: {
-      xor: xor
+      xor
     }
   };
-
-  function _typeof(o) {
-    "@babel/helpers - typeof";
-
-    return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) {
-      return typeof o;
-    } : function (o) {
-      return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o;
-    }, _typeof(o);
-  }
 
   /**
    * @namespace Date
    */
-  var LOCAL_FORMAT_YMD = ['AF', 'CN', 'HU', 'JP', 'KP', 'KR', 'LT', 'MN', 'TW'];
-  var LOCAL_FORMAT_MDY = ['BZ', 'FM', 'US'];
+  const LOCAL_FORMAT_YMD = ['AF', 'CN', 'HU', 'JP', 'KP', 'KR', 'LT', 'MN', 'TW'];
+  const LOCAL_FORMAT_MDY = ['BZ', 'FM', 'US'];
 
   /**
    * Second in milliseconds
@@ -619,7 +609,7 @@
    * @returns {Date} New Date
    */
   function parseValue(value) {
-    var type = _typeof(value);
+    var type = typeof value;
     if (type === 'string') {
       switch (value.toLowerCase()) {
         case 'today':
@@ -661,7 +651,7 @@
    * @returns {string} Local date format
    */
   function getLocalDateFormat(fullFormat) {
-    var countryCode, format;
+    let countryCode, format;
     if (typeof fullFormat === 'undefined') {
       fullFormat = true;
     }
@@ -809,7 +799,7 @@
    * @returns {number} Number of days passed
    */
   function daysPassed(toDate) {
-    var toDateType = _typeof(toDate);
+    var toDateType = typeof toDate;
     if (toDateType === 'undefined') {
       toDate = new Date();
     } else if (toDateType === 'number' || toDateType === 'string') {
@@ -842,9 +832,8 @@
    * @param {boolean} [showSeconds=true] Flag if seconds also should be returned
    * @returns {string} Time string
    */
-  function toUiTime() {
-    var showSeconds = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
-    var seconds = showSeconds ? ":".concat(this.getSeconds().pad(2)) : '';
+  function toUiTime(showSeconds = true) {
+    const seconds = showSeconds ? `:${this.getSeconds().pad(2)}` : '';
     return this.getHours().pad(2) + ':' + this.getMinutes().pad(2) + seconds;
   }
 
@@ -866,8 +855,7 @@
    * @param {boolean} [showSeconds=true] Flag if seconds also should be returned
    * @returns {string} Time string
    */
-  function toUiDateTime() {
-    var showSeconds = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+  function toUiDateTime(showSeconds = true) {
     return this.toUiDate() + ' ' + this.toUiTime(showSeconds);
   }
 
@@ -903,37 +891,37 @@
   }
   var DateExt = {
     constant: {
-      SECOND: SECOND,
-      MINUTE: MINUTE,
-      HOUR: HOUR,
-      DAY: DAY,
-      WEEK: WEEK
+      SECOND,
+      MINUTE,
+      HOUR,
+      DAY,
+      WEEK
     },
     getter: {
-      TODAY: TODAY,
-      YESTERDAY: YESTERDAY,
-      TOMORROW: TOMORROW,
-      DAYAFTERTOMORROW: DAYAFTERTOMORROW
+      TODAY,
+      YESTERDAY,
+      TOMORROW,
+      DAYAFTERTOMORROW
     },
     static: {
-      parseValue: parseValue,
-      daysFromNow: daysFromNow,
-      getLocalDateFormat: getLocalDateFormat,
-      getTimezoneName: getTimezoneName,
-      getHms: getHms,
-      toHmsFormat: toHmsFormat,
-      toStopwatchFormat: toStopwatchFormat,
-      toTimerFormat: toTimerFormat
+      parseValue,
+      daysFromNow,
+      getLocalDateFormat,
+      getTimezoneName,
+      getHms,
+      toHmsFormat,
+      toStopwatchFormat,
+      toTimerFormat
     },
     method: {
-      daysPassed: daysPassed,
-      toCustomDate: toCustomDate,
-      toUiTime: toUiTime,
-      toUiDate: toUiDate,
-      toUiDateTime: toUiDateTime,
-      toInputTimeFormat: toInputTimeFormat,
-      toInputDateFormat: toInputDateFormat,
-      addTime: addTime
+      daysPassed,
+      toCustomDate,
+      toUiTime,
+      toUiDate,
+      toUiDateTime,
+      toInputTimeFormat,
+      toInputDateFormat,
+      addTime
     }
   };
 
@@ -951,24 +939,24 @@
   function isJSONString(str) {
     try {
       JSON.parse(str);
-    } catch (_unused) {
+    } catch {
       return false;
     }
     return true;
   }
   var JSONExt = {
     static: {
-      isJSONString: isJSONString
+      isJSONString
     }
   };
 
   function Mash() {
-    var n = 0xefc8249d;
+    let n = 0xefc8249d;
     return function (data) {
       data = data.toString();
-      for (var i = 0; i < data.length; i++) {
+      for (let i = 0; i < data.length; i++) {
         n += data.charCodeAt(i);
-        var h = 0.02519603282416938 * n;
+        let h = 0.02519603282416938 * n;
         n = h >>> 0;
         h -= n;
         h *= n;
@@ -980,10 +968,10 @@
     };
   }
   function MRG32k3a() {
-    var args = Array.prototype.slice.call(arguments);
-    var m1 = 4294967087;
-    var m2 = 4294944443;
-    var s10 = 12345,
+    let args = Array.prototype.slice.call(arguments);
+    const m1 = 4294967087;
+    const m2 = 4294944443;
+    let s10 = 12345,
       s11 = 12345,
       s12 = 123,
       s20 = 12345,
@@ -992,8 +980,8 @@
     if (args.length === 0) {
       args = [+new Date()];
     }
-    var mash = Mash();
-    for (var i = 0; i < args.length; i++) {
+    let mash = Mash();
+    for (let i = 0; i < args.length; i++) {
       s10 += mash(args[i]) * 0x100000000; // 2 ^ 32
       s11 += mash(args[i]) * 0x100000000;
       s12 += mash(args[i]) * 0x100000000;
@@ -1008,14 +996,14 @@
     s21 %= m2;
     s22 %= m2;
     mash = null;
-    var uint32 = function uint32() {
-      var m1 = 4294967087;
-      var m2 = 4294944443;
-      var a12 = 1403580;
-      var a13n = 810728;
-      var a21 = 527612;
-      var a23n = 1370589;
-      var k, p1, p2;
+    const uint32 = function () {
+      const m1 = 4294967087;
+      const m2 = 4294944443;
+      const a12 = 1403580;
+      const a13n = 810728;
+      const a21 = 527612;
+      const a23n = 1370589;
+      let k, p1, p2;
       p1 = a12 * s11 - a13n * s10;
       k = p1 / m1 | 0;
       p1 -= k * m1;
@@ -1041,7 +1029,7 @@
    * @namespace Math
    */
 
-  var _MRG32k3a = new MRG32k3a();
+  const _MRG32k3a = new MRG32k3a();
 
   /**
    * Better alternative to Math.random based on MRG32k2a algorithm
@@ -1074,7 +1062,7 @@
    * @param {number} precision Precision
    */
   function roundTo(num, precision) {
-    var magnitude = Math.pow(10, precision);
+    const magnitude = Math.pow(10, precision);
     return Math.round(num * magnitude) / magnitude;
   }
 
@@ -1092,7 +1080,7 @@
     values.sort(function (a, b) {
       return a - b;
     });
-    var half = Math.floor(values.length / 2);
+    const half = Math.floor(values.length / 2);
     return values.length % 2 ? values[half] : (values[half - 1] + values[half]) / 2;
   }
 
@@ -1127,12 +1115,12 @@
   }
   var MathExt = {
     static: {
-      rand: rand,
-      log10: log10,
-      roundTo: roundTo,
-      median: median,
-      sum: sum,
-      avg: avg
+      rand,
+      log10,
+      roundTo,
+      median,
+      sum,
+      avg
     }
   };
 
@@ -1203,29 +1191,29 @@
    * @returns {string} Padded string
    */
   function pad(padding) {
-    var value = this.toString();
-    var pointIndex = value.indexOf('.');
-    var toAdd = padding;
+    let value = this.toString();
+    const pointIndex = value.indexOf('.');
+    let toAdd = padding;
     if (pointIndex > -1) {
       toAdd -= pointIndex;
     } else {
       toAdd -= value.length;
     }
-    for (var i = 0; i < toAdd; i++) {
+    for (let i = 0; i < toAdd; i++) {
       value = '0' + value;
     }
     return value;
   }
   var NumberExt = {
     static: {
-      isNumber: isNumber,
-      isNegativeZero: isNegativeZero,
-      isInteger: isInteger,
-      isNatural: isNatural,
-      isFloat: isFloat
+      isNumber,
+      isNegativeZero,
+      isInteger,
+      isNatural,
+      isFloat
     },
     method: {
-      pad: pad
+      pad
     }
   };
 
@@ -1241,7 +1229,7 @@
    * @returns {boolean} Verdict
    */
   function isObject(subject) {
-    return subject !== null && _typeof(subject) === 'object';
+    return subject !== null && typeof subject === 'object';
   }
 
   /**
@@ -1254,7 +1242,7 @@
    * @returns {void}
    */
   function copy(src, dst, what) {
-    var i;
+    let i;
     if (what == null || what.length === 0) {
       for (i in src) {
         dst[i] = src[i];
@@ -1276,8 +1264,8 @@
    * @returns {boolean} Verdict
    */
   function isLike$1(subject, query) {
-    var k, v;
-    if (_typeof(query) == 'object' && _typeof(subject) == 'object') {
+    let k, v;
+    if (typeof query == 'object' && typeof subject == 'object') {
       for (k in query) {
         v = typeof subject[k] == 'function' ? subject[k]() : subject[k];
         if (v !== query[k]) {
@@ -1300,8 +1288,8 @@
    * @returns {number} Number of items
    */
   function count(subject) {
-    var items = 0;
-    for (var i in subject) {
+    let items = 0;
+    for (const i in subject) {
       if (subject.hasOwnProperty(i)) {
         items += 1;
       }
@@ -1316,9 +1304,9 @@
    * @memberof Object
    */
   function values(o) {
-    var obj = Object(o);
-    var values = [];
-    for (var k in obj) {
+    const obj = Object(o);
+    const values = [];
+    for (const k in obj) {
       values.push(obj[k]);
     }
     return values;
@@ -1331,12 +1319,12 @@
    * @memberof Object
    */
   function assign() {
-    var args = Array.prototype.slice.call(arguments, 0);
-    var to = Object(args[0]);
+    const args = Array.prototype.slice.call(arguments, 0);
+    const to = Object(args[0]);
     if (args.length !== 1) {
-      var sources = args.slice(1);
-      var nextSource, keys, from, nextKey, propValue;
-      for (var i = 0; i < sources.length; i++) {
+      const sources = args.slice(1);
+      let nextSource, keys, from, nextKey, propValue;
+      for (let i = 0; i < sources.length; i++) {
         nextSource = sources[i];
         from = Object(nextSource);
         if (typeof nextSource === 'undefined' || nextSource === null) {
@@ -1344,7 +1332,7 @@
         } else {
           keys = Object.keys(from);
         }
-        for (var j = 0; j < keys.length; j++) {
+        for (let j = 0; j < keys.length; j++) {
           nextKey = keys[j];
           propValue = from[nextKey];
           if (typeof propValue !== 'undefined' && from.propertyIsEnumerable(nextKey)) {
@@ -1363,12 +1351,12 @@
    * @returns {object} Object
    */
   function deepAssign() {
-    var args = Array.prototype.slice.call(arguments, 0);
-    var to = Object(args[0]);
+    const args = Array.prototype.slice.call(arguments, 0);
+    const to = Object(args[0]);
     if (args.length !== 1) {
-      var sources = args.slice(1);
-      var nextSource, keys, from, nextKey, propValue;
-      for (var i = 0; i < sources.length; i++) {
+      const sources = args.slice(1);
+      let nextSource, keys, from, nextKey, propValue;
+      for (let i = 0; i < sources.length; i++) {
         nextSource = sources[i];
         from = Object(nextSource);
         if (typeof nextSource === 'undefined' || nextSource === null) {
@@ -1376,12 +1364,12 @@
         } else {
           keys = Object.keys(from);
         }
-        for (var j = 0; j < keys.length; j++) {
+        for (let j = 0; j < keys.length; j++) {
           nextKey = keys[j];
           propValue = from[nextKey];
           if (typeof propValue !== 'undefined' && from.propertyIsEnumerable(nextKey)) {
-            if (_typeof(to[nextKey]) === 'object' && _typeof(propValue) === 'object') {
-              var areArrays = Array.isArray(to[nextKey]) && Array.isArray(propValue);
+            if (typeof to[nextKey] === 'object' && typeof propValue === 'object') {
+              const areArrays = Array.isArray(to[nextKey]) && Array.isArray(propValue);
               to[nextKey] = Object.deepAssign({}, to[nextKey], propValue);
               if (areArrays) {
                 to[nextKey] = Object.values(to[nextKey]);
@@ -1405,14 +1393,14 @@
   }
   var ObjectExt = {
     static: {
-      isObject: isObject,
-      copy: copy,
+      isObject,
+      copy,
       isLike: isLike$1,
-      count: count,
-      values: values,
-      assign: assign,
-      deepAssign: deepAssign,
-      clone: clone
+      count,
+      values,
+      assign,
+      deepAssign,
+      clone
     }
   };
 
@@ -1432,7 +1420,7 @@
   }
   var PromiseExt = {
     static: {
-      isPromise: isPromise
+      isPromise
     }
   };
 
@@ -1452,7 +1440,7 @@
   }
   var RegExpExt = {
     static: {
-      escapeString: escapeString
+      escapeString
     }
   };
 
@@ -1470,7 +1458,7 @@
    * @returns {number} Distance
    */
   function editDistance(a, b) {
-    var matrix = [],
+    let matrix = [],
       i,
       j;
     if (a.length === 0) {
@@ -1520,7 +1508,7 @@
    * @returns {number} Ratio
    */
   function getSimilarity(a, b) {
-    var l = Math.max(a.length, b.length);
+    const l = Math.max(a.length, b.length);
     return (l - String.editDistance(a, b)) / l;
   }
 
@@ -1565,7 +1553,7 @@
    * @returns {string} New string
    */
   function capitaliseFirstLetter(lower) {
-    var value = this.valueOf();
+    let value = this.valueOf();
     if (lower) {
       value = value.toLowerCase();
     }
@@ -1593,7 +1581,7 @@
    * @returns {string} New string
    */
   function noCase() {
-    var value = this.valueOf();
+    let value = this.valueOf();
 
     // detect capitalized snake case
     if (/^[A-Z0-9_]+$/.test(value)) {
@@ -1632,7 +1620,7 @@
    * @returns {string} String in camelCase
    */
   function toCamelCase() {
-    var value = this.valueOf();
+    let value = this.valueOf();
 
     // normalize
     value = value.noCase();
@@ -1661,7 +1649,7 @@
    * @returns {string} String in kebab-case
    */
   function toKebabCase() {
-    var value = this.valueOf();
+    let value = this.valueOf();
 
     // normalize
     value = value.noCase();
@@ -1679,8 +1667,8 @@
    * @returns {string} String in snake_case
    */
   function toSnakeCase(convertToUpperCase) {
-    var toUpperCase = convertToUpperCase || false;
-    var value = this.valueOf();
+    const toUpperCase = convertToUpperCase || false;
+    let value = this.valueOf();
 
     // normalize
     value = value.noCase();
@@ -1701,7 +1689,7 @@
    * @returns {string} Checksum
    */
   function toChecksum() {
-    var value, i, chk;
+    let value, i, chk;
     value = this.valueOf();
     chk = 0x12345678;
     for (i = 0; i < value.length; i++) {
@@ -1750,7 +1738,7 @@
    * @returns {boolean} Verdict
    */
   function includes(search, start) {
-    var _start = typeof start !== 'number' ? 0 : start;
+    const _start = typeof start !== 'number' ? 0 : start;
     if (_start + search.length > this.length) {
       return false;
     }
@@ -1758,25 +1746,25 @@
   }
   var StringExt = {
     static: {
-      editDistance: editDistance,
-      getSimilarity: getSimilarity,
-      isEmpty: isEmpty,
-      isNotEmpty: isNotEmpty,
-      isInvalidOrEmpty: isInvalidOrEmpty
+      editDistance,
+      getSimilarity,
+      isEmpty,
+      isNotEmpty,
+      isInvalidOrEmpty
     },
     method: {
-      capitaliseFirstLetter: capitaliseFirstLetter,
-      lowerFirstLetter: lowerFirstLetter,
-      noCase: noCase,
-      toCamelCase: toCamelCase,
-      toPascalCase: toPascalCase,
-      toKebabCase: toKebabCase,
-      toSnakeCase: toSnakeCase,
-      toChecksum: toChecksum,
-      toBoolean: toBoolean,
-      reverse: reverse,
-      isLike: isLike,
-      includes: includes
+      capitaliseFirstLetter,
+      lowerFirstLetter,
+      noCase,
+      toCamelCase,
+      toPascalCase,
+      toKebabCase,
+      toSnakeCase,
+      toChecksum,
+      toBoolean,
+      reverse,
+      isLike,
+      includes
     }
   };
 
@@ -1866,8 +1854,8 @@
    * @returns {string} Human-readable file size string
    */
   FileSize.getReadableString = function (bytes) {
-    var i;
-    var val = bytes;
+    let i;
+    let val = bytes;
     for (i = 0; i < FileSize.UNITS.length; i++) {
       if (val < 1000) break;
       val /= 1024;
@@ -1875,7 +1863,7 @@
     return (i === 0 ? val : val.toFixed(1)) + FileSize.UNITS[i];
   };
 
-  var extensions = {
+  const extensions = {
     global: globalExt,
     Array: ArrayExt,
     Boolean: BooleanExt,
@@ -1888,18 +1876,18 @@
     RegExp: RegExpExt,
     String: StringExt
   };
-  var libraries = {
+  const libraries = {
     FileSize: FileSize
   };
   function finka() {
     // Enable extensions
-    for (var extName in extensions) {
-      var ext = extensions[extName];
-      var target = extName === 'global' ? global : global[extName];
+    for (let extName in extensions) {
+      let ext = extensions[extName];
+      let target = extName === 'global' ? global : global[extName];
 
       // constant
       if (typeof ext.constant !== 'undefined') {
-        for (var name in ext.constant) {
+        for (let name in ext.constant) {
           if (typeof target[name] === 'undefined') {
             target[name] = ext.constant[name];
           }
@@ -1908,10 +1896,10 @@
 
       // getter
       if (typeof ext.getter !== 'undefined') {
-        for (var _name in ext.getter) {
-          if (typeof target[_name] === 'undefined') {
-            Object.defineProperty(target, _name, {
-              get: ext.getter[_name]
+        for (let name in ext.getter) {
+          if (typeof target[name] === 'undefined') {
+            Object.defineProperty(target, name, {
+              get: ext.getter[name]
             });
           }
         }
@@ -1919,25 +1907,25 @@
 
       // static
       if (typeof ext.static !== 'undefined') {
-        for (var _name2 in ext.static) {
-          if (typeof target[_name2] === 'undefined') {
-            target[_name2] = ext.static[_name2].bind(target);
+        for (let name in ext.static) {
+          if (typeof target[name] === 'undefined') {
+            target[name] = ext.static[name].bind(target);
           }
         }
       }
 
       // method
       if (typeof ext.method !== 'undefined') {
-        for (var _name3 in ext.method) {
-          if (typeof target.prototype[_name3] === 'undefined') {
-            target.prototype[_name3] = ext.method[_name3];
+        for (let name in ext.method) {
+          if (typeof target.prototype[name] === 'undefined') {
+            target.prototype[name] = ext.method[name];
           }
         }
       }
     }
 
     // Enable libraries
-    for (var libName in libraries) {
+    for (let libName in libraries) {
       if (typeof global[libName] === 'undefined') {
         global[libName] = libraries[libName];
       }
